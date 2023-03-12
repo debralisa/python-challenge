@@ -90,5 +90,4 @@ with open(election_out_txt, "w") as txt_file:
 
     #save winner to text file
     txt_file.write(winning_candidate_summary)
-=======
->>>>>>> 0c19b7d359f6e4332631ccea2cde5e99fcaae89c
+
