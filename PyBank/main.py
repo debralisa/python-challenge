@@ -1,5 +1,4 @@
 #python challenge PyBank script
-
 #Import Dependencies
 import os
 import csv
@@ -16,15 +15,15 @@ budget_out_txt = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'analy
 
 #Profit/Loss Parameters and Lists for variables
 total_months = 0
-start_profit = 0
+prev_profit = 0
 total_profit = 0
 
-month_with_change = []
+month_of_change = []
 profit_change_list = []
 greatest_increase = ["", 0]
 greatest_decrease = ["", 999999999]
 
-#Read in the csv file
+#Read in the CSV file
 #with open(budget_data_csv, 'r') as csvfile:
 
 
@@ -38,45 +37,44 @@ with open(budget_data_csv, "r") as profit_data:
 
     for row in reader:
 
-        #calculating the totals through the rows
+        #track the totals
         total_months = total_months + 1
         total_profit = total_profit + int(row["Profit/Losses"])
 
-        #calculating the profit/loss changes
-        profit_change = int(row["Profit/Losses"]) - start_profit
-        start_profit = int(row["Profit/Losses"])
+        #track the profit/loss change
+        profit_change = int(row["Profit/Losses"]) - prev_profit
+        prev_profit = int(row["Profit/Losses"])
         profit_change_list = profit_change_list + [profit_change]
-        month_with_change = month_with_change + [row["Date"]]
+        month_of_change = month_of_change + [row["Date"]]
 
-        #calculate the greatest increase in profit/loss with if statement
+        #calculate the greatest increase
         if (profit_change > greatest_increase[1]):
             greatest_increase[0] = row["Date"]
             greatest_increase[1] = profit_change
 
-        #calculate the greatest decrease in profit/loss using if statement
+        #calculate the greatest decrease
         if (profit_change < greatest_decrease[1]):
             greatest_decrease[0] = row["Date"]
             greatest_decrease[1] = profit_change
 
-#calculate the average of the profit/loss change
-profit_aver = sum(profit_change_list)/len(profit_change_list)
+    #calculate the average profit/loss change
+    profit_aver = sum(profit_change_list) / len(profit_change_list)
 
-#setup format for the Summary Information to print
+#Output the Summary Information
 output=(
     f"\nFinancial Analysis\n"
     f"______________________\n"
     f"Total Months: {total_months}\n"
     f"Total: ${total_profit}\n"
-    f"Average Change: ${profit_aver .2f}n"
+    f"Average Change: ${profit_aver: .2f}\n"
     f"Greatest Increase: {greatest_increase[0]} (${greatest_increase[1]})\n"
     f"Greatest Decrease: {greatest_decrease[0]} (${greatest_decrease[1]})\n"
     
 )
 
-#Print the output summary
+#Print output
 print(output)
 
-#Export the summary output to the text file
+#Export output to the text file
 with open(budget_out_txt, "w") as txt_file:
     txt_file.write(output)
-
